@@ -1,0 +1,403 @@
+# RDK-B Raspberry Pi Wi-Fi Access Point using Yocto
+
+> A complete Embedded Linux project demonstrating the implementation of an **RDK-B inspired Wi-Fi Access Point** on a **Raspberry Pi 4 Model B** using the **Yocto Project**. The project covers the complete development lifecycle, from building a custom Linux image to configuring the Raspberry Pi as a wireless Access Point with DHCP, NAT, and Internet sharing.
+
+---
+
+# Table of Contents
+
+- Project Overview
+- Objectives
+- Features
+- System Architecture
+- Project Workflow
+- Hardware Requirements
+- Software Requirements
+- Repository Structure
+- Development Environment
+- Build Process
+- Flashing the Image
+- Testing
+- Challenges Faced
+- Results
+- Future Improvements
+- References
+
+---
+
+# Project Overview
+
+The objective of this project is to build a custom Embedded Linux image using the Yocto Project and transform a Raspberry Pi 4 into a fully functional Wi-Fi Access Point similar to the wireless gateway used in RDK-B (Reference Design Kit for Broadband).
+
+Instead of using a prebuilt operating system such as Raspberry Pi OS, a completely customized Linux distribution was created using Yocto. The project includes:
+
+- Building Linux from source
+- Creating a custom Yocto layer
+- Creating a custom image recipe
+- Integrating hostapd
+- Integrating dnsmasq
+- Configuring systemd services
+- Configuring network interfaces
+- Enabling IPv4 forwarding
+- Configuring iptables for NAT
+- Sharing Ethernet Internet through Wi-Fi
+- Testing multiple wireless clients
+
+This repository documents every development step, including implementation details, build process, debugging procedures, encountered issues, and their solutions.
+
+---
+
+# Objectives
+
+The primary objectives of this project are:
+
+- Understand the Yocto Project build system.
+- Learn BitBake recipes.
+- Build a custom Linux image.
+- Create a custom meta-layer.
+- Configure Raspberry Pi 4 as a wireless Access Point.
+- Implement DHCP services.
+- Configure Network Address Translation (NAT).
+- Enable Internet sharing.
+- Understand systemd service management.
+- Learn Embedded Linux image customization.
+- Document real-world debugging and development workflow.
+
+---
+
+# Features
+
+✔ Custom Yocto Linux Image
+
+✔ Raspberry Pi 4 Support
+
+✔ Custom meta-rdkb-ap Layer
+
+✔ Wi-Fi Access Point
+
+✔ WPA2 Authentication
+
+✔ DHCP Server
+
+✔ Static IP Configuration
+
+✔ IPv4 Forwarding
+
+✔ NAT using iptables
+
+✔ Ethernet to Wi-Fi Internet Sharing
+
+✔ systemd Service Management
+
+✔ Fully Automated Boot Configuration
+
+✔ Multi-client Support
+
+✔ Complete Documentation
+
+---
+
+# System Architecture
+
+                    +----------------------+
+                    |      Internet        |
+                    +----------+-----------+
+                               |
+                               |
+                          Ethernet (eth0)
+                               |
+                     +---------+----------+
+                     | Raspberry Pi 4     |
+                     | Yocto Linux Image  |
+                     |                    |
+                     | hostapd            |
+                     | dnsmasq            |
+                     | systemd            |
+                     | iptables           |
+                     +---------+----------+
+                               |
+                         Wi-Fi (wlan0)
+                               |
+             +-----------------+------------------+
+             |        Wireless Clients            |
+             | Phones | Laptop | Tablet | IoT     |
+             +------------------------------------+
+
+---
+
+# Project Workflow
+
+Power ON
+
+↓
+
+Bootloader (U-Boot / Raspberry Pi Firmware)
+
+↓
+
+Linux Kernel
+
+↓
+
+Root Filesystem
+
+↓
+
+systemd
+
+↓
+
+rdkb-network.service
+
+↓
+
+Configure wlan0
+
+↓
+
+Assign Static IP
+
+↓
+
+Enable IPv4 Forwarding
+
+↓
+
+Configure iptables
+
+↓
+
+Start hostapd
+
+↓
+
+Create Wi-Fi Access Point
+
+↓
+
+Start dnsmasq
+
+↓
+
+Assign DHCP Addresses
+
+↓
+
+Wireless Clients Connected
+
+↓
+
+Internet Sharing Enabled
+
+---
+
+# Hardware Requirements
+
+| Hardware | Description |
+|------------|------------|
+| Raspberry Pi 4 Model B | Target Device |
+| microSD Card | 16GB or higher |
+| Ethernet Cable | Internet Connection |
+| Ubuntu PC | Yocto Build Host |
+| Wi-Fi Devices | Client Testing |
+
+---
+
+# Software Requirements
+
+Ubuntu 22.04 LTS
+
+Yocto Project (Kirkstone)
+
+BitBake
+
+Poky
+
+meta-openembedded
+
+meta-networking
+
+meta-raspberrypi
+
+Git
+
+Python3
+
+systemd
+
+hostapd
+
+dnsmasq
+
+iptables
+
+---
+
+# Repository Structure
+
+```text
+RDK-B-RaspberryPi-AccessPoint/
+
+├── README.md
+├── 01_Project_Overview/
+├── 02_Environment_Setup/
+├── 03_Yocto_Build/
+├── 04_RDKB_Customization/
+├── 05_Build_and_Flash/
+├── 06_Testing/
+├── 07_Debugging/
+├── 08_Project_Structure/
+├── 09_Commands/
+├── 10_Failures_and_Fixes/
+├── Images/
+└── Scripts/
+```
+
+---
+
+# Development Environment
+
+Host Operating System
+
+Ubuntu 22.04 LTS
+
+Build System
+
+Yocto Project (Kirkstone)
+
+Target Board
+
+Raspberry Pi 4 Model B (64-bit)
+
+Kernel
+
+Linux Kernel (Generated by Yocto)
+
+---
+
+# Major Components
+
+| Component | Purpose |
+|------------|----------|
+| Yocto | Linux Distribution Builder |
+| BitBake | Build Engine |
+| Poky | Yocto Reference Distribution |
+| hostapd | Wi-Fi Access Point |
+| dnsmasq | DHCP Server |
+| systemd | Service Manager |
+| iptables | NAT Configuration |
+| Raspberry Pi Firmware | Bootloader |
+
+---
+
+# Testing Performed
+
+The following tests were successfully completed:
+
+- Yocto image build
+- Boot verification
+- systemd verification
+- hostapd service verification
+- dnsmasq service verification
+- DHCP testing
+- Static IP testing
+- NAT testing
+- Internet sharing
+- Multiple client connectivity
+- SSH login
+- Wireless authentication
+- Image verification before flashing
+
+---
+
+# Challenges Faced
+
+During development several issues were encountered, including:
+
+- Missing systemd integration
+- hostapd configuration conflicts
+- dnsmasq startup issues
+- Duplicate configuration files
+- Missing .wic image generation
+- Service startup ordering
+- DHCP failures
+- Internet unavailable after Wi-Fi connection
+- Missing iptables package
+- NAT configuration failures
+- Image verification challenges
+- Build cache issues
+- BitBake dependency problems
+
+Every issue is documented separately in the **10_Failures_and_Fixes** directory.
+
+---
+
+# Final Result
+
+Successfully built a custom Yocto Linux image that transforms a Raspberry Pi 4 into a fully functional Wi-Fi Access Point capable of:
+
+- Broadcasting a custom SSID
+- WPA2 secured authentication
+- Assigning IP addresses using DHCP
+- Sharing Ethernet Internet through Wi-Fi
+- Supporting multiple simultaneous wireless clients
+- Automatic service startup using systemd
+
+---
+
+# Future Improvements
+
+- Web-based configuration interface
+- Firewall customization
+- Captive Portal
+- VLAN support
+- WPA3 support
+- Dual-band Wi-Fi
+- OpenWrt comparison
+- TR-181 integration
+- Full RDK-B stack integration
+- Docker support
+- OTA updates
+
+---
+
+# Documentation
+
+This repository provides complete documentation covering:
+
+- Project planning
+- Environment setup
+- Yocto build process
+- Custom layer creation
+- BitBake recipes
+- Network configuration
+- Raspberry Pi deployment
+- Testing procedures
+- Debugging techniques
+- Common failures and fixes
+
+---
+
+# References
+
+- Yocto Project Documentation
+- BitBake User Manual
+- Raspberry Pi Documentation
+- hostapd Documentation
+- dnsmasq Documentation
+- Linux systemd Documentation
+- Linux iptables Documentation
+
+---
+
+# Author
+
+**Rajashekar Reddy**
+
+Embedded Linux | Yocto | Raspberry Pi | RDK-B | Networking
+
+---
+
+# License
+
+This project is intended for educational and research purposes.
